@@ -4,14 +4,15 @@ FROM openjdk:8-jdk-alpine
 # Directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-#Archivo Java y los recursos necesarios
-COPY InterfazBot.java /app/
-COPY mujer4.png /app/
-COPY ventana-de-chat2.png /app/
+# Archivo build.xml y el código fuente
+COPY build.xml /app
+COPY src /app/src
 
-# Compilar archivo Java
-RUN javac Control.java
-RUN javac Datos.java
+# Instala Ant en el contenedor
+RUN apk add --no-cache ant
 
-# Comando a ejecutar cuando se inicie el contenedor
-CMD ["java", "InterfazBot.java"]
+# Compila el proyecto con Ant
+RUN ant
+
+# Especifica el comando a ejecutar cuando se inicie el contenedor
+CMD ["java", "-jar", "AbsoluteLayout.jar"]
